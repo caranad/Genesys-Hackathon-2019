@@ -20,14 +20,15 @@ var storage = multer.diskStorage({
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(multer({
-	dest:'./public/uploads/',
+	//dest:'./public/uploads/',
 	storage:storage
 }).single('userfile'));
 
 
 
 
-app.post('/upload', function (req, res) {
+app.post('/upload', upload.single('myFile'), function (req, res) {
+    const file = req.file;
     res.end(JSON.stringify({}));
 });
 
