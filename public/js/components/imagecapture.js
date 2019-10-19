@@ -16,11 +16,12 @@ var app = new Vue({
                 reader.onload = (e) => {
                     var src = e.target.result;
                     vm.image = src;
+                    vm.sendImage(input);
                 }
                 reader.readAsDataURL(input);
             }
         },
-        sendImage: function(event) {
+        sendImage: function(image) {
             var vm = this;
             event.preventDefault();
             vm.submit = true;
@@ -39,7 +40,7 @@ var app = new Vue({
                     formData.append("country", response.data.sys.country);
                     vm.loaded = 66;
                     formData.append("weather", response.data.weather[0].description);
-                    formData.append("image", event.target[0].files[0]);
+                    formData.append("userfile", image);
                     vm.loaded = 100;
 
                     axios({

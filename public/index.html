@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Pole</title>
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <link rel = "stylesheet" href = "css/main.css"/>
         <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
@@ -10,15 +11,12 @@
     <body>
         <div id = "app">
             <div class = "imageCapture">
-                <form v-on:submit = "sendImage($event)">
+                <form>
                     <section>
                         <img id = "selectedImage" :src = "image" v-if = "image !== '#'"/>
                     </section>
                     <section>
                         <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
-                    </section>
-                    <section>
-                        <button v-if = "image !== '#'">Send Photo</button>
                     </section>
                     <section>
                         <progress v-if = "submit" max = "100" :value = "loaded"></progress>
