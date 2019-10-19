@@ -36,6 +36,7 @@ app.use(upload.single('userfile'));
 
 app.post('/upload', function (req, res) {
     const file = req.file;
+    console.log(file);
     res.end(JSON.stringify({}));
 });
 
