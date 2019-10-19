@@ -1,12 +1,14 @@
 <html>
     <head>
         <title>asfdsfsda</title>
-        <script src="https://unpkg.com/axios/dist/axios.min.js" defer async></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer async></script>
-        <script src = "/js/components/imagecapture.js"></script>
+        <link rel = "stylesheet" href = "css/main.css"/>
+        <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
+        <script src = "/js/components/imagecapture.js" defer></script>
     </head>
     <body>
         <div id = "app">
+            {{ image }}
             <div class = "imageCapture">
                 <form v-on:submit = "sendImage($event)">
                     <section>

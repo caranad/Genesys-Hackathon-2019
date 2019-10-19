@@ -26,7 +26,7 @@ var app = new Vue({
             this.submit = true;
             alert("Sending to backend");
 
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition((position) => {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
