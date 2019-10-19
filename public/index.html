@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>asfdsfsda</title>
+        <script src="https://unpkg.com/axios/dist/axios.min.js" defer async></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer async></script>
+        <script src = "/js/components/imagecapture.js"></script>
+    </head>
+    <body>
+        <div id = "app">
+            <div class = "imageCapture">
+                <form v-on:submit = "sendImage($event)">
+                    <section>
+                        <img id = "selectedImage" :src = "image" v-if = "image !== '#'"/>
+                    </section>
+                    <section>
+                        <input type = "file" id = "file-input" accept = "image/*" capture = "camera"/>
+                    </section>
+                    <button v-if = "image !== '#'">Send Photo</button>
+                    <progress v-if = "submit" max = "100" :value = "loaded"></progress>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
