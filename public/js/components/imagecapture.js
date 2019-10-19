@@ -16,6 +16,7 @@ var app = new Vue({
                 reader.onload = (e) => {
                     var src = e.target.result;
                     vm.image = src;
+                    vm.loaded = 33;
                     vm.sendImage(input);
                 }
                 reader.readAsDataURL(input);
@@ -31,18 +32,18 @@ var app = new Vue({
             navigator.geolocation.getCurrentPosition((position) => {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
+                vm.loaded = 66;
 
                 axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=277b013a4573cd9ac323b78d7dc15971`).then((response) => {
+                    vm.loaded = 90;    
+                
                     var formData = new FormData();
                     formData.append("latitude", latitude);
                     formData.append("longitude", longitude);
-                    vm.loaded = 33;
                     formData.append("country", response.data.sys.country);
-                    vm.loaded = 66;
                     formData.append("weather", response.data.weather[0].description);
                     formData.append("userfile", image);
-                    vm.loaded = 100;
-
+                    
                     axios({
                         method: 'post',
                         url: 'https://localhost:3000/upload',
@@ -51,9 +52,11 @@ var app = new Vue({
                     })
                     .then(function (response) {
                         console.log(response);
+                        vm.loaded = 100;
                     })
                     .catch(function (response) {
                         console.log(response);
+                        vm.loaded = 100;
                     });
                 })
             });
