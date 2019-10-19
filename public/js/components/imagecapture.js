@@ -5,22 +5,21 @@ var app = new Vue({
         submit: false,
         loaded: 0
     },
-    mounted: () => {
-        const fileInput = document.getElementById('file-input');
-        fileInput.addEventListener('change', (e) => this.getFileInfo(e.target.files));
-    },
     methods: {
-        getFileInfo: (input) => {
+        onImageSelect : function(e) {
+            this.getFileInfo(e.target.files[0]);
+        },
+        getFileInfo: function (input) {
+            var vm = this;
             if (input) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    this.image = e.target.result;
-                    document.querySelector("#selectedImage").src = this.image;
+                    var src = e.target.result;
+                    vm.image = src;
                 }
-                reader.readAsDataURL(input[0]);
+                reader.readAsDataURL(input);
             }
         },
-        
         sendImage: (event) => {
             event.preventDefault();
             this.submit = true;
