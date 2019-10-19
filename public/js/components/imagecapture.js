@@ -35,22 +35,25 @@ var app = new Vue({
                     var formData = new FormData();
                     formData.append("latitude", latitude);
                     formData.append("longitude", longitude);
+                    vm.loaded = 33;
                     formData.append("country", response.data.sys.country);
+                    vm.loaded = 66;
                     formData.append("weather", response.data.weather[0].description);
                     formData.append("image", event.target[0].files[0]);
+                    vm.loaded = 100;
 
                     axios({
                         method: 'post',
                         url: 'https://localhost:3000/upload',
                         data: formData,
                         config: { headers: {'Content-Type': 'multipart/form-data' }}
-                        })
-                        .then(function (response) {
-                            console.log(response);
-                        })
-                        .catch(function (response) {
-                            console.log(response);
-                        });
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (response) {
+                        console.log(response);
+                    });
                 })
             });
         }

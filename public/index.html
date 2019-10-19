@@ -17,8 +17,12 @@
                     <section>
                         <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
                     </section>
-                    <button v-if = "image !== '#'">Send Photo</button>
-                    <progress v-if = "submit" max = "100" :value = "loaded"></progress>
+                    <section>
+                        <button v-if = "image !== '#'">Send Photo</button>
+                    </section>
+                    <section>
+                        <progress v-if = "submit" max = "100" :value = "loaded"></progress>
+                    </section>
                 </form>
             </div>
         </div>
