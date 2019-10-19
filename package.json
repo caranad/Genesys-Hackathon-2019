@@ -1,0 +1,28 @@
+{
+  "name": "prince_farming",
+  "version": "0.0.1",
+  "description": "better manage your crops",
+  "author": "Ryan D'Souza <rydsouza82@gmail.com>",
+  "contributors": [
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caranad/Genesys-Hackathon-2019"
+  },
+  "bugs": {
+    "url": "https://github.com/caranad/Genesys-Hackathon-2019/issues"
+  },
+  "keywords": [
+    "farming", "prince"
+  ],
+  "dependencies": {
+    "clarifai": "*"
+  },
+  "private": true,
+  "analyze": false,
+  "license": "MIT"
+}
