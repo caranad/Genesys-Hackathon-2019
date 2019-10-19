@@ -1,0 +1,9 @@
+PROCEDURE
+1. Load knowledge base, category and FAQ one by one via Promises or something
+2. Store the category, knowledge base IDs on the server or something like that
+3. Train that particular knowledge base
+
+CHATBOT
+1. Send a message
+2. Chatbot will query the Business, Context and Region knowledge bases
+3. After getting the appropriate data, it will query the Risk knowledge base 
