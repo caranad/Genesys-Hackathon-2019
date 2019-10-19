@@ -2,10 +2,17 @@
 
 var express = require('express');
 const request = require('request');
+var multer = require('multer');
+var path = require('path');
+var https = require('https');
+var fse = require('fse');
+
+var privateKey  = fse.readFileSync('sslcert/key.pem', 'utf8');
+var certificate = fse.readFileSync('sslcert/cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 // start express module
 var app = express();
-
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -16,18 +23,15 @@ var storage = multer.diskStorage({
     cb(null, file.originalname)
   }
 });
-
+var upload = multer({ storage: storage })
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(multer({
-	//dest:'./public/uploads/',
-	storage:storage
-}).single('userfile'));
+app.use(upload.single('userfile'));
 
 
 
 
-app.post('/upload', upload.single('myFile'), function (req, res) {
+app.post('/upload', function (req, res) {
     const file = req.file;
     res.end(JSON.stringify({}));
 });
