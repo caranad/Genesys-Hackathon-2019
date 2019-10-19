@@ -11,17 +11,20 @@ var privateKey  = fse.readFileSync('sslcert/key.pem', 'utf8');
 var certificate = fse.readFileSync('sslcert/cert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
+
+
+
 // start express module
 var app = express();
 
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './public/uploads/')
-  },
-  filename: function (req, file, cb) {
-	  //console.log(file);
-    cb(null, file.originalname)
-  }
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads/');
+    },
+    filename: function (req, file, cb) {
+        // console.log(file);
+        cb(null, file.originalname);
+    }
 });
 var upload = multer({ storage: storage })
 
@@ -35,11 +38,6 @@ app.post('/upload', function (req, res) {
     const file = req.file;
     res.end(JSON.stringify({}));
 });
-
-
-
-
-
 
 
 
