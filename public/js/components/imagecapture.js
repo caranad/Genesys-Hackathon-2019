@@ -20,19 +20,37 @@ var app = new Vue({
                 reader.readAsDataURL(input);
             }
         },
-        sendImage: (event) => {
+        sendImage: function(event) {
+            var vm = this;
             event.preventDefault();
-            this.submit = true;
-            alert("Sending to backend");
+            vm.submit = true;
+
+            console.log(event);
 
             navigator.geolocation.getCurrentPosition((position) => {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
-                axios.get(`
-            http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=277b013a4573cd9ac323b78d7dc15971
-                `).then((response) => {
-                    console.log(response);
+                axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=277b013a4573cd9ac323b78d7dc15971`).then((response) => {
+                    var formData = new FormData();
+                    formData.append("latitude", latitude);
+                    formData.append("longitude", longitude);
+                    formData.append("country", response.data.sys.country);
+                    formData.append("weather", response.data.weather[0].description);
+                    formData.append("image", event.target[0].files[0]);
+
+                    axios({
+                        method: 'post',
+                        url: 'https://localhost:3000/upload',
+                        data: formData,
+                        config: { headers: {'Content-Type': 'multipart/form-data' }}
+                        })
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (response) {
+                            console.log(response);
+                        });
                 })
             });
         }
