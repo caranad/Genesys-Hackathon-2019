@@ -112,6 +112,8 @@ app.post('/upload', function (req, res) {
                     suggestion : suggestion,
                     confidence : confidence
                 };
+                console.log(JSON.stringify(full_data));
+
                 fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
     
                 var html =  "<div style=\"background-color:rgb(210, 210, 210);\" align=\"center\">" +
@@ -179,6 +181,25 @@ function askGenesys(env_data, callback) {
     });
 }
 
+function colorDistance(v1, v2) {
+    var i, d = 0;
+
+    for (i = 0; i < v1.length; i++) {
+        d += (v1[i] - v2[i])*(v1[i] - v2[i]);
+    }
+
+    return Math.sqrt(d);
+}
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
 function askGenesysQuestion(token, env_data, callback) {
 
     // transformation
@@ -192,12 +213,20 @@ function askGenesysQuestion(token, env_data, callback) {
     else if (env_data.weather.indexOf("fog") !== -1) { var weather = 'mild'; }
     else { var weather = 'sunny'; }
 
-    if (env_data.img_data.color.indexOf("B") !== -1) { var color = 'green'; }
-    else if (env_data.img_data.color.indexOf("A") !== -1) { var color = 'brown'; }
-    else { var color = 'yellow'; }
+    var rgb = hexToRgb(env_data.img_data.color);
+    var cd_green = colorDistance([rgb.r, rgb.g, rgb.b], [9, 214, 50]); // green
+    var cd_yellow = colorDistance([rgb.r, rgb.g, rgb.b], [255, 208, 0]); // yellow
+    var cd_brown = colorDistance([rgb.r, rgb.g, rgb.b], [145, 101, 58]); // brown
+    var d = [{c:'green',v:cd_green}, {c:'yellow',v:cd_yellow}, {c:'brown',v:cd_brown}];
+    //console.log(d);
+    d = d.sort(function(a,b) {
+        return a.v-b.v;
+    });
+    //console.log(d);
+    var color = d[0].c;
 
     var pests = env_data.img_data.tags.filter(function(x) {
-        return ["insect", "bug", "bee", "wasp", "ladybug", "ant", "beetle", "fly", "butterfly", "caterpillar", "moth", "cocoon", "larvae", "worm", "locust"].indexOf(x) !== -1;
+        return ["insect", "bug", "bee", "wasp", "ladybug", "ant", "beetle", "fly", "butterfly", "caterpillar", "centipede", "moth", "cocoon", "larva", "larvae", "worm", "locust"].indexOf(x) !== -1;
     }).length > 0 ? "yes" : "no";
 
     var QUES = "Location: " + env_data.city + "; Color: " + color + "; Pests: " + pests + "; weather forecast: " + weather + "; temperature: " + temp + "; extreme forecast: no";
