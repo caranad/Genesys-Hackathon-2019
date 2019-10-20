@@ -5,7 +5,8 @@ var app = new Vue({
         long : 'B',
         country : 'C',
         weather : 'D',
-        problem : 'E'
+        temperature : 'E',
+        problem : 'F'
     },
     mounted : async function() {
         const response = await fetch("uploads/data.json");
@@ -15,6 +16,7 @@ var app = new Vue({
         this.long = data.long;
         this.country = data.country;
         this.weather = data.weather;
+        this.temperature = data.temperature;
         this.problem = data.problem;
     },
     methods: {
