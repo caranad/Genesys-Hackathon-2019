@@ -4,6 +4,7 @@
         <title>Pole</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <link rel = "stylesheet" href = "css/main.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/exif-js" defer></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
         <script src = "js/components/imagecapture.js" defer></script>
@@ -13,7 +14,7 @@
             <div class = "imageCapture">
                 <form>
                     <section>
-                        <img id = "selectedImage" :src = "image" v-if = "image !== '#'"/>
+                        <img ref = "selectedImage" id = "selectedImage" :src = "image" v-if = "image !== '#'"/>
                     </section>
                     <section>
                         <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />

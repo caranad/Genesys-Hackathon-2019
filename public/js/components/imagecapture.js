@@ -11,12 +11,29 @@ var app = new Vue({
         },
         getFileInfo: function (input) {
             var vm = this;
+            console.log(vm.$refs.selectedImage);
+
             if (input) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     var src = e.target.result;
                     vm.image = src;
                     vm.loaded = 33;
+
+                    console.log(vm.$refs.selectedImage);
+                    
+                    EXIF.getData(vm.$refs.selectedImage, function() {
+                        alert('Exif=', EXIF.getTag(this, "Orientation"));
+                        switch(parseInt(EXIF.getTag(this, "Orientation"))) {
+                            case 3:
+                                vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
+                            case 6:
+                                vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
+                            case 8:
+                                vm.$refs.selectedImage.style.transform = "rotate(270deg)"; break;
+                        }
+                    });
+
                     vm.sendImage(input);
                 }
                 reader.readAsDataURL(input);
@@ -27,9 +44,8 @@ var app = new Vue({
             event.preventDefault();
             vm.submit = true;
 
-            console.log(event);
-
             navigator.geolocation.getCurrentPosition((position) => {
+                alert(position);
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 vm.loaded = 66;
@@ -46,16 +62,18 @@ var app = new Vue({
                     
                     axios({
                         method: 'post',
-                        url: 'https://localhost:3000/upload',
+                        url: '/upload',
                         data: formData,
                         config: { headers: {'Content-Type': 'multipart/form-data' }}
                     })
                     .then(function (response) {
                         console.log(response);
+                        alert("Success");
                         vm.loaded = 100;
                     })
                     .catch(function (response) {
                         console.log(response);
+                        alert("Fail");
                         vm.loaded = 100;
                     });
                 })
