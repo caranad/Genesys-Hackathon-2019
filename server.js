@@ -72,13 +72,13 @@ app.post('/upload', function (req, res) {
         // rotate image
         const image = await Jimp.read('./public/uploads/image.jpg'); 
         if (orientation == 1) {
-            image.rotate(0).write('./public/uploads/image.jpg'); 
+            await image.rotate(0).writeAsync('./public/uploads/image.jpg'); 
         } else if (orientation == 3) {
-            image.rotate(180).write('./public/uploads/image.jpg');
+            await image.rotate(180).writeAsync('./public/uploads/image.jpg');
         } else if (orientation == 6) {
-            image.rotate(270).write('./public/uploads/image.jpg');
+            await image.rotate(270).writeAsync('./public/uploads/image.jpg');
         } else if (orientation == 8) {
-            image.rotate(90).write('./public/uploads/image.jpg');
+            await image.rotate(90).writeAsync('./public/uploads/image.jpg');
         }
 
         // originals
@@ -192,36 +192,6 @@ function askGenesysQuestion(token, env_data, callback) {
     });
 }
 
-
-
-var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(process.env.PORT || 3000, function () {
-    var host = httpsServer.address().address;
-    var port = httpsServer.address().port;
-
-    console.log('Prince Farming started at https://%s:%s', host, port);
-});
-
-
-
-/*
-const Clarifai = require('clarifai');
-const app = new Clarifai.App({
-    apiKey: 'f9c4e799879b4ea18641017d1a8a6feb'
-});
-
-app.models.predict(Clarifai.GENERAL_MODEL, 'https://res.cloudinary.com/patch-gardens/image/upload/c_fill,f_auto,h_840,q_auto:good,w_840/v1568385956/qee7f4jxsabwphslmjfz.jpg')
-.then(response => {
-  console.log(JSON.stringify(response, null, 4));
-})
-.catch(err => {
-  console.log(err);
-});
-*/
-
-
-
-
 function getImageDetails(callback) {
 
     sharp('./public/uploads/image.jpg').resize(400).toFile('./public/uploads/image_resized.jpg', (err, info) => { 
@@ -273,3 +243,26 @@ function getImageDetails(callback) {
         });
     });
 }
+
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(process.env.PORT || 3000, function () {
+    var host = httpsServer.address().address;
+    var port = httpsServer.address().port;
+
+    console.log('Prince Farming started at https://%s:%s', host, port);
+});
+
+/*
+const Clarifai = require('clarifai');
+const app = new Clarifai.App({
+    apiKey: 'f9c4e799879b4ea18641017d1a8a6feb'
+});
+
+app.models.predict(Clarifai.GENERAL_MODEL, 'https://res.cloudinary.com/patch-gardens/image/upload/c_fill,f_auto,h_840,q_auto:good,w_840/v1568385956/qee7f4jxsabwphslmjfz.jpg')
+.then(response => {
+  console.log(JSON.stringify(response, null, 4));
+})
+.catch(err => {
+  console.log(err);
+});
+*/
