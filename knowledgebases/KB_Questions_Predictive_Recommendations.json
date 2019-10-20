@@ -1,0 +1,51 @@
+[
+	{
+	  "type": "faq",
+	  "faq": {
+	    "question": "[Placeholder for data points to tease out warning not to water to avoid over-watering and to save costs (e.g. What should I do if: (1) I'm located in [Toronto]; (2) my crops are [green]; (3) there are no pests; and (4) it will rain in the next [5] days]",
+	    "answer": "Don't water the plants, it will rain over the next 5 days anyways",
+	    "alternatives": null
+	  },
+	  "externalUrl": "http://test.co/info/{{$guid}}"
+	},
+	{
+	  "type": "faq",
+	  "faq": {
+	    "question": "[Placeholder for data point to tease out need to water plants]",
+	    "answer": "You'll want to water the plants, the sun will be scorching over the next 5 days with no rain.",
+	    "alternatives": null
+	  },
+	  "externalUrl": "http://test.co/info/{{$guid}}"
+	},
+	{
+	  "type": "faq",
+	  "faq": {
+	    "question": "[Placeholder for data point to tease out use for pesticide]",
+	    "answer": "Apply some pesticides. We recommend using Product X",
+	    "alternatives": null
+	  },
+	  "externalUrl": "http://test.co/info/{{$guid}}"
+	},
+	{
+	  "type": "faq",
+	  "faq": {
+	    "question": "[Placeholder for data point about geography to tease out soil condition]",
+	    "answer": "In your geography, the soil condition is generally not conductive to the groups and lacking in macronutrients. Consider getting the soil testing and, if necessary, adding organic matter.",
+	    "alternatives": null
+	  },
+	  "externalUrl": "http://test.co/info/{{$guid}}"
+	},
+	{
+	  "type": "faq",
+	  "faq": {
+	    "question": "[Placeholder for data point about natural disaster]",
+	    "answer": "Looks like a tornado warning is coming. You may want to harvest everything you can asap!",
+	    "alternatives": null
+	  },
+	  "externalUrl": "http://test.co/info/{{$guid}}"
+	}
+]
+
+
+
+
