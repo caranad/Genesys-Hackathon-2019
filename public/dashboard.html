@@ -9,12 +9,39 @@
     </head>
     <body>
         <div id = "app">
-            <img id = "selectedImage" src = "uploads/image.jpg"/>
-            <div>{{lat}}</div>
-            <div>{{long}}</div>
-            <div>{{country}}</div>
-            <div>{{weather}}</div>
-            <div>{{problem}}</div>
+            <div class = "dashboard">
+                <div class = "image_container">
+                    <img id = "selectedImage" src = "uploads/image.jpg"/>
+                </div>
+                <div class = "image_data_container">
+                    <table align = "center">
+                        <tr>
+                            <td>Latitude</td>
+                            <td>{{lat}}</td>
+                        </tr>
+                        <tr>
+                            <td>Longitude</td>
+                            <td>{{long}}</td>
+                        </tr>
+                        <tr>
+                            <td>Country</td>
+                            <td>{{country}}</td>
+                        </tr>
+                        <tr>
+                            <td>Weather</td>
+                            <td>{{weather}}</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td>{{temperature}} C</td>
+                        </tr>
+                        <tr>
+                            <td>Problem</td>
+                            <td>{{problem}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </body>
 </html>

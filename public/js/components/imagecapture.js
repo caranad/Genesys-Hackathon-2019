@@ -9,30 +9,33 @@ var app = new Vue({
         onImageSelect : function(e) {
             this.getFileInfo(e.target.files[0]);
         },
+        loadImage : function(e) {
+            var vm = this;
+            EXIF.getData(e.target, function() {
+                const ORIENT_TRANSFORMS = {
+                    1: '',
+                    2: 'rotateY(180deg)',
+                    3: 'rotate(180deg)',
+                    4: 'rotate(180deg) rotateY(180deg)',
+                    5: 'rotate(270deg) rotateY(180deg)',
+                    6: 'rotate(90deg)',
+                    7: 'rotate(90deg) rotateY(180deg)',
+                    8: 'rotate(270deg)'
+                };
+                var o = EXIF.getTag(e.target, "Orientation");
+                var sty = ORIENT_TRANSFORMS[o];
+                vm.$refs.selectedImage.style.transform = sty;
+                
+            });
+        },
         getFileInfo: function (input) {
             var vm = this;
-
             if (input) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     var src = e.target.result;
                     vm.image = src;
                     vm.loaded = 33;
-                    
-                    EXIF.getData(vm.$refs.selectedImage, function() {
-                        alert('Exif=' + EXIF.getTag(vm, "Orientation"));
-                        switch(parseInt(EXIF.getTag(vm, "Orientation"))) {
-                            case 3:
-                                vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
-                            case 6:
-                                vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
-                            case 8:
-                                vm.$refs.selectedImage.style.transform = "rotate(270deg)"; break;
-                            default:
-                                vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
-                        }
-                    });
-
                     vm.sendImage(input);
                 }
                 reader.readAsDataURL(input);
@@ -44,7 +47,7 @@ var app = new Vue({
             vm.submit = true;
 
             navigator.geolocation.getCurrentPosition((position) => {
-                alert(position);
+                //alert(position);
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 vm.loaded = 66;
@@ -55,10 +58,10 @@ var app = new Vue({
                     var formData = new FormData();
                     formData.append("latitude", latitude);
                     formData.append("longitude", longitude);
+                    formData.append("temperature", parseInt(response.data.main.temp) - 273);
                     formData.append("country", response.data.sys.country);
                     formData.append("weather", response.data.weather[0].description);
                     formData.append("userfile", image);
-                    
                     
                     axios({
                         method: 'post',
@@ -68,13 +71,13 @@ var app = new Vue({
                     })
                     .then(function (response) {
                         console.log(response);
-                        alert("Success");
+                        //alert("Success");
                         vm.loaded = 100;
                     })
                     .catch(function (response) {
-                        alert(response);
+                        //alert(response);
                         console.log(response);
-                        alert("Fail");
+                        //alert("Fail");
                         vm.loaded = 100;
                     });
                 })
