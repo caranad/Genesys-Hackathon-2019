@@ -7,6 +7,7 @@
     </head>
     <body>
         <div class = "splash_page">
+            <div class = "overlay"></div>
             <button id = "play">Welcome</button>
         </div>
         <audio id = "myAudio">
@@ -23,7 +24,8 @@
             window.navigator.vibrate([100,30,100,30,100,30,200,30,200,30,200,30,100,30,100,30,100]);
             // Vibrate, play a loud noise, and show the notification
             document.querySelector("#myAudio").play();
-            console.log(data);
+            document.querySelector(".overlay").style.display = "none";
+            document.querySelector(".overlay").innerHTML = data.data;
         });
     </script>
 </html>
