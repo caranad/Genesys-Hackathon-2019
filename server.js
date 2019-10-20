@@ -59,20 +59,22 @@ app.post('/upload', function (req, res) {
 
         // get orientation
         var orientation = exifData.image.Orientation;
-        console.log(orientation);
+        console.log("orientation", orientation);
    
         // remove exif metadata
-        const newData = piexif.remove(
-            fse.readFileSync('./public/uploads/image.jpg').toString(TYPE)
-        )
-        fse.writeFileSync('./public/uploads/image.jpg', new Buffer(newData, TYPE))
+        if (orientation==1 || orientation==3 || orientation==6 || orientation==8) {
+            const newData = piexif.remove(
+                fse.readFileSync('./public/uploads/image.jpg').toString(TYPE)
+            )
+            fse.writeFileSync('./public/uploads/image.jpg', new Buffer(newData, TYPE))
+        }
 
         // rotate image
         const image = await Jimp.read('./public/uploads/image.jpg'); 
         if (orientation == 1) {
-            image.rotate(180).write('./public/uploads/image.jpg'); 
+            image.rotate(0).write('./public/uploads/image.jpg'); 
         } else if (orientation == 3) {
-            image.rotate(0).write('./public/uploads/image.jpg');
+            image.rotate(180).write('./public/uploads/image.jpg');
         } else if (orientation == 6) {
             image.rotate(270).write('./public/uploads/image.jpg');
         } else if (orientation == 8) {
