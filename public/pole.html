@@ -23,8 +23,8 @@
             <div class = "imageCapture">
                 <form>
                     <section>
-                        <input type = "file" id = "file-input" accept = ".jpg" @change="onImageSelect" />
-                        <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
+                        <label for="files" style = "color: white;">Select Image</label>
+                        <input type = "file" id = "file-input" accept = "image/jpg" @change="onImageSelect" />
                     </section>
                     <section>
                         <progress v-if = "loaded > 0 && 100 > loaded" max = "100" :value = "loaded"></progress>
