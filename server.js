@@ -140,13 +140,10 @@ function askGenesysQuestion(token) {
          organizationid: 'a078486f-4ed7-4814-af1a-11718c78ea21',
          'Content-Type': 'application/json' },
       body: 
-       { query: 'Why did my account get locked?',
-         query2: 'I want to get alerts for my account activity. What do I do?',
-         query3: 'Will my loan application be dependent on my credit score?',
-         query4: 'Is my financial information safe?',
-         query5: 'Is my data  safe?',
-         query6: 'What do you do for my security?',
-         query7: 'Can I take a vacation?',
+       { 
+       query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+       query2: "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
+       query3: "Location: Toronto; Color: yellow; Pests: yes; weather forecast: rain; temperature forecast: cold; extreme forecast: yes",  
          pageSize: 5,
          pageNumber: 1,
          sortOrder: 'string',
@@ -156,12 +153,19 @@ function askGenesysQuestion(token) {
       json: true };
     
     request(options, function (error, response, body) {
-      if (error) throw new Error(error);
+        if (error) throw new Error(error);
     
-      console.log(body);
-    });
-    
+        console.log(JSON.stringify(body,null,4));
 
+        var results = body.results.filter(function(x) {
+            return x.confidence > 0.1;
+        });
+        if (results.length > 0) {
+            var result = results[0];
+            result.confidence
+            result.faq.answer
+        }
+    });
 }
 
 
