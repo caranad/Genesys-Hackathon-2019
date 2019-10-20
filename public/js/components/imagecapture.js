@@ -12,7 +12,8 @@ var app = new Vue({
         loadImage : function(e) {
             var vm = this;
             EXIF.getData(e.target, function() {
-                switch(EXIF.getTag(e.target, "Orientation")) {
+                /*
+                switch() {
                     case 3:
                         vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
                     case 6:
@@ -22,6 +23,22 @@ var app = new Vue({
                     case 1:
                         vm.$refs.selectedImage.style.transform = "rotate(0deg)"; break;
                 }
+                */
+
+                const ORIENT_TRANSFORMS = {
+                    1: '',
+                    2: 'rotateY(180deg)',
+                    3: 'rotate(180deg)',
+                    4: 'rotate(180deg) rotateY(180deg)',
+                    5: 'rotate(270deg) rotateY(180deg)',
+                    6: 'rotate(90deg)',
+                    7: 'rotate(90deg) rotateY(180deg)',
+                    8: 'rotate(270deg)'
+                };
+                var o = EXIF.getTag(e.target, "Orientation");
+                var sty = ORIENT_TRANSFORMS[o];
+                vm.$refs.selectedImage.style.transform = sty;
+                
             });
         },
         getFileInfo: function (input) {
