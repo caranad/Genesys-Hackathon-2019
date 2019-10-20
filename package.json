@@ -31,7 +31,8 @@
     "jpeg-autorotate": "^5.0.2",
     "multer": "^1.4.2",
     "request": "^2.88.0",
-    "sendmail": "^1.6.1"
+    "sendmail": "^1.6.1",
+    "sharp": "^0.23.1"
   },
   "private": true,
   "analyze": false,

@@ -11,6 +11,7 @@ var options = {quality: 100}
 var Jimp = require('jimp'); 
 var piexif = require('piexifjs');
 const sharp = require('sharp');
+const sendmail = require('sendmail')();
 
 const ipath = './public/uploads/image.jpg' 
 
@@ -92,28 +93,52 @@ app.post('/upload', function (req, res) {
 
     //console.log(latitude, longitude, country, weather);
 
-    fse.writeFileSync('./public/uploads/data.json', JSON.stringify({
-        "lat" : latitude,
-        "long" : longitude,
-        "country" : country,
-        "weather" : weather,
-        "temperature" : temperature,
-        "problem" : "water the crops"
-    }));
+    getImageDetails(function(img_data) {
 
-    //console.log(userfile);
+        var env_data = {
+            "lat" : latitude,
+            "long" : longitude,
+            "country" : country,
+            "city" : "Toronto",
+            "weather" : weather,
+            "temperature" : temperature,
+            "img_data" : img_data
+        };
 
-    getImageDetails(function(data) {
-        
+        askGenesys(env_data, function(suggestion, confidence) {
+            var full_data = {
+                env_data : env_data,
+                suggestion : suggestion,
+                confidence : confidence
+            };
+            fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
+
+            sendmail({
+                from: 'no-reply@yourdomain.com',
+                to: 'baranadi@rogers.com',
+                subject: 'Prince Farming Notification',
+                html: 
+                   "<div>Latitude: " + env_data.lat + "</div>"+
+                   "<div>Longitude: " + env_data.long + "</div>"+
+                   "<div>Country: " + env_data.country + "</div>"+
+                   "<div>City: " + env_data.city + "</div>"+
+                   "<div>Weather: " + env_data.weather + "</div>"+
+                   "<div>Temperature: " + env_data.temperature + " C</div>"+
+                   "<div>Image Color: <span style=\"width:10px;height:10px;background-color:" + env_data.img_data.color + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>" +
+                   "<div>Image Tags: " + env_data.img_data.tags.join(", ") + "</div>" +
+                   "<div>Suggestion: " + full_data.suggestion + "</div>" +
+                   "<div>Confidence: " + (full_data.confidence*100) + "%</div>"
+              }, function(err, reply) {
+                res.end(JSON.stringify({}));
+            });
+        });
     });
-
-    res.end(JSON.stringify(data));
 });
 
 
-askGenesys();
 
-function askGenesys() {
+
+function askGenesys(env_data, callback) {
     var options = { 
         method: 'POST',
         url: 'https://api.genesysappliedresearch.com/v2/knowledge/generatetoken',
@@ -126,12 +151,11 @@ function askGenesys() {
         
         var token = body.token;
         //console.log(body);
-        askGenesysQuestion(token);
+        askGenesysQuestion(token, env_data, callback);
     });
 }
 
-function askGenesysQuestion(token) {
-    
+function askGenesysQuestion(token, env_data, callback) {
 
     var options = { method: 'POST',
       url: 'https://api.genesysappliedresearch.com/v2/knowledge/knowledgebases/43a214a6-be93-477d-a2e6-25601ff1a247/search',
@@ -141,9 +165,10 @@ function askGenesysQuestion(token) {
          'Content-Type': 'application/json' },
       body: 
        { 
-       query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
-       query2: "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
-       query3: "Location: Toronto; Color: yellow; Pests: yes; weather forecast: rain; temperature forecast: cold; extreme forecast: yes",  
+        query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+       //query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+       //query2: "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
+       //query3: "Location: Toronto; Color: yellow; Pests: yes; weather forecast: rain; temperature forecast: cold; extreme forecast: yes",  
          pageSize: 5,
          pageNumber: 1,
          sortOrder: 'string',
@@ -162,8 +187,7 @@ function askGenesysQuestion(token) {
         });
         if (results.length > 0) {
             var result = results[0];
-            result.confidence
-            result.faq.answer
+            callback(result.faq.answer, result.confidence);
         }
     });
 }
@@ -236,10 +260,15 @@ function getImageDetails(callback) {
             var desc_tags = body.description.tags;
             var tags = body.tags.map(function(x) {return x.name;});
             
+            var Obj = {};
+            desc_tags.map(x => {Obj[x] = true; });
+            tags.map(x => {Obj[x] = true; });
+
+            var t = Object.keys(Obj).sort();
+
             callback({
                 color : "#" + color,
-                desc_tags,
-                tags
+                tags : t
             });
         });
     });
