@@ -208,6 +208,7 @@ function askGenesysQuestion(token, env_data, callback) {
     else { var temp = 'hot'; }
 
     if (env_data.weather.indexOf("part") !== -1) { var weather = 'mild'; }
+    else if (env_data.weather.indexOf("mist") !== -1) { var weather = 'no rain'; }
     else if (env_data.weather.indexOf("cloud") !== -1) { var weather = 'rain'; }
     else if (env_data.weather.indexOf("rain") !== -1) { var weather = 'rain'; }
     else if (env_data.weather.indexOf("fog") !== -1) { var weather = 'mild'; }
@@ -230,6 +231,7 @@ function askGenesysQuestion(token, env_data, callback) {
     }).length > 0 ? "yes" : "no";
 
     var QUES = "Location: " + env_data.city + "; Color: " + color + "; Pests: " + pests + "; weather forecast: " + weather + "; temperature: " + temp + "; extreme forecast: no";
+    //QUES = "Location: Toronto; Color: green; Pests: yes; weather forecast: no rain; temperature forecast: hot; extreme forecast: no";
     console.log(QUES);
 
 
