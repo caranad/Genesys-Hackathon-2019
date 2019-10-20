@@ -7,16 +7,16 @@
     </head>
     <body>
         <div class = "splash_page"></div>
+        <audio id = "myAudio">
+            <source src="audio/accomplished.mp3" type="audio/mpeg">
+        </audio>
     </body>
     <script type = "text/javascript">
-        document.addEventListener('click', () => {
-            window.location.href = "/dashboard.html";
-        })
-
         var socket = io('http://localhost');
         socket.on('notification', function (data) {
 
             // Vibrate, play a loud noise, and show the notification
+            document.querySelector("#myAudio").play();
             window.navigator.vibrate(200);
             console.log(data);
         });
