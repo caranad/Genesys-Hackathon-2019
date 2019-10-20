@@ -101,6 +101,7 @@ app.post('/upload', function (req, res) {
             "country" : country,
             "city" : "Toronto",
             "weather" : weather,
+            "extreme_weather" : false,
             "temperature" : temperature,
             "img_data" : img_data
         };
