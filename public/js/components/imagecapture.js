@@ -11,7 +11,6 @@ var app = new Vue({
         },
         getFileInfo: function (input) {
             var vm = this;
-            console.log(vm.$refs.selectedImage);
 
             if (input) {
                 const reader = new FileReader();
@@ -19,18 +18,18 @@ var app = new Vue({
                     var src = e.target.result;
                     vm.image = src;
                     vm.loaded = 33;
-
-                    console.log(vm.$refs.selectedImage);
                     
                     EXIF.getData(vm.$refs.selectedImage, function() {
-                        alert('Exif=', EXIF.getTag(this, "Orientation"));
-                        switch(parseInt(EXIF.getTag(this, "Orientation"))) {
+                        alert('Exif=' + EXIF.getTag(vm, "Orientation"));
+                        switch(parseInt(EXIF.getTag(vm, "Orientation"))) {
                             case 3:
                                 vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
                             case 6:
                                 vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
                             case 8:
                                 vm.$refs.selectedImage.style.transform = "rotate(270deg)"; break;
+                            default:
+                                vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
                         }
                     });
 
