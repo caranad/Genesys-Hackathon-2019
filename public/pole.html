@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pole</title>
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <link rel = "stylesheet" href = "css/main.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/exif-js" defer></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
+        <script src = "js/components/imagecapture.js" defer></script>
+    </head>
+    <body>
+        <div id = "app">
+            <div v-if = "show">
+                <div class = "overlay" align="center">
+                    <h1>Data has processed!</h1>
+                </div>
+            </div>
+            <section>
+                <img ref = "selectedImage" v-on:load="loadImage" id = "selectedImage" :src = "image" v-show = "image !== '#'"/>
+            </section>
+            <div class = "imageCapture">
+                <form>
+                    <section>
+                        <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
+                    </section>
+                    <section>
+                        <progress v-if = "loaded > 0 && 100 > loaded" max = "100" :value = "loaded"></progress>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

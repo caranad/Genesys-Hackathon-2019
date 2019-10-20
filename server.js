@@ -167,7 +167,10 @@ function askGenesys(env_data, callback) {
     };
 
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error) {
+            console.log(error);
+            return askGenesysQuestion('', env_data, callback);
+        }
         var body = JSON.parse(body);
         
         var token = body.token;
@@ -223,7 +226,10 @@ function askGenesysQuestion(token, env_data, callback) {
       json: true };
     
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error) {
+            console.log(error);
+            return callback("Keep doing what you are doing.", 0.3);
+        }
     
         //console.log(JSON.stringify(body,null,4));
 
@@ -233,6 +239,8 @@ function askGenesysQuestion(token, env_data, callback) {
         if (results.length > 0) {
             var result = results[0];
             callback(result.faq.answer, result.confidence);
+        } else {
+            callback("Keep doing what you are doing.", 0.3);
         }
     });
 }
@@ -265,7 +273,7 @@ function getImageDetails(callback) {
     request.post(options, (error, response, body) => {
         if (error) {
             console.log('Error: ', error);
-            return callback({});
+            return callback({color : '#008000', tags : ['plant']});
         }
 
         var body = JSON.parse(body);
