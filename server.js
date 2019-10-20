@@ -7,8 +7,10 @@ var path = require('path');
 var https = require('https');
 var fse = require('fse');
 var ExifImage = require('exif').ExifImage;
-const options = {quality: 100}
+var options = {quality: 100}
 var Jimp = require('jimp'); 
+var piexif = require('piexifjs');
+const sharp = require('sharp');
 
 const ipath = './public/uploads/image.jpg' 
 
@@ -17,7 +19,7 @@ var certificate = fse.readFileSync('sslcert/cert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 
-
+const TYPE = `binary`
 
 // start express module
 var app = express();
@@ -39,8 +41,6 @@ app.use(upload.single('userfile'));
 
 
 
-
-
 app.post('/upload', function (req, res) {
     
     var latitude = req.body.latitude;
@@ -58,6 +58,7 @@ app.post('/upload', function (req, res) {
             console.log(exifData.image.Orientation); // Do something with your data!
 
         var orientation = exifData.image.Orientation;
+
 
         // User-Defined Function to read the images 
         const image = await Jimp.read('./public/uploads/image.jpg'); 
@@ -78,6 +79,13 @@ app.post('/upload', function (req, res) {
         //6: 'rotate(90deg)',
         //8: 'rotate(270deg)'
                 
+        
+        const newData = piexif.remove(
+            fse.readFileSync('./public/uploads/image.jpg').toString(TYPE)
+        )
+        fse.writeFileSync('./public/uploads/image2.jpg', new Buffer(newData, TYPE))
+
+
         console.log("Image Processing Completed"); 
     });
     */
@@ -95,11 +103,70 @@ app.post('/upload', function (req, res) {
 
     //console.log(userfile);
 
-    res.end(JSON.stringify({}));
+    getImageDetails(function(data) {
+        
+    });
+
+    res.end(JSON.stringify(data));
 });
 
 
+askGenesys();
 
+function askGenesys() {
+    var options = { 
+        method: 'POST',
+        url: 'https://api.genesysappliedresearch.com/v2/knowledge/generatetoken',
+        headers: { secretkey: '96a8e5ad-06a6-4ed7-87ec-8e1d0e6c8820', organizationid: 'a078486f-4ed7-4814-af1a-11718c78ea21' } 
+    };
+
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+        var body = JSON.parse(body);
+        
+        var token = body.token;
+        //console.log(body);
+        askGenesysQuestion(token);
+    });
+}
+
+function askGenesysQuestion(token) {
+    
+
+    var options = { method: 'POST',
+      url: 'https://api.genesysappliedresearch.com/v2/knowledge/knowledgebases/43a214a6-be93-477d-a2e6-25601ff1a247/search',
+      headers: 
+       { token: token,
+         organizationid: 'a078486f-4ed7-4814-af1a-11718c78ea21',
+         'Content-Type': 'application/json' },
+      body: 
+       { 
+       query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+       query2: "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
+       query3: "Location: Toronto; Color: yellow; Pests: yes; weather forecast: rain; temperature forecast: cold; extreme forecast: yes",  
+         pageSize: 5,
+         pageNumber: 1,
+         sortOrder: 'string',
+         sortBy: 'string',
+         languageCode: 'en-US',
+         documentType: 'Faq' },
+      json: true };
+    
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+    
+        console.log(JSON.stringify(body,null,4));
+
+        var results = body.results.filter(function(x) {
+            return x.confidence > 0.1;
+        });
+        if (results.length > 0) {
+            var result = results[0];
+            result.confidence
+            result.faq.answer
+        }
+    });
+}
 
 
 
@@ -131,40 +198,49 @@ app.models.predict(Clarifai.GENERAL_MODEL, 'https://res.cloudinary.com/patch-gar
 
 
 
-/*
-let subscriptionKey = "38952973ab824afe8673284add426299";
-let endpoint = "https://westcentralus.api.cognitive.microsoft.com/"
+function getImageDetails(callback) {
 
-var uriBase = endpoint + 'vision/v2.1/analyze';
+    sharp('./public/uploads/image.jpg').resize(400).toFile('./public/uploads/image_resized.jpg', (err, info) => { 
 
-const imageUrl =
-    'https://res.cloudinary.com/patch-gardens/image/upload/c_fill,f_auto,h_840,q_auto:good,w_840/v1568385956/qee7f4jxsabwphslmjfz.jpg';
+        var imageToUSe = fse.readFileSync('./public/uploads/image_resized.jpg');
 
-// Request parameters.
-const params = {
-    'visualFeatures': 'Categories,Description,Color,Brands,Faces,Objects,Tags',
-    'details': '',
-    'language': 'en'
-};
+        var subscriptionKey = "38952973ab824afe8673284add426299";
+        var endpoint = "https://westcentralus.api.cognitive.microsoft.com/"
+        var uriBase = endpoint + 'vision/v2.1/analyze';
 
-const options = {
-    uri: uriBase,
-    qs: params,
-    body: '{"url": ' + '"' + imageUrl + '"}',
-    headers: {
-        'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key' : subscriptionKey
-    }
-};
+        // Request parameters.
+        var params = {
+            'visualFeatures': 'Categories,Description,Color,Brands,Faces,Objects,Tags',
+            'details': '',
+            'language': 'en'
+        };
+        
+        var options = {
+            uri: uriBase,
+            qs: params,
+            body:imageToUSe,
+            headers: {
+                'Content-Type': 'application/octet-stream',
+                'Ocp-Apim-Subscription-Key' : subscriptionKey
+            }
+        };
+        
+        request.post(options, (error, response, body) => {
+            if (error) {
+                console.log('Error: ', error);
+                return callback({});
+            }
 
-request.post(options, (error, response, body) => {
-  if (error) {
-    console.log('Error: ', error);
-    return;
-  }
-  let jsonResponse = JSON.stringify(JSON.parse(body), null, 4);
-  console.log('JSON Response\n');
-  console.log(jsonResponse);
-});
-
-*/
+            var body = JSON.parse(body);
+            var color = body.color.accentColor;
+            var desc_tags = body.description.tags;
+            var tags = body.tags.map(function(x) {return x.name;});
+            
+            callback({
+                color : "#" + color,
+                desc_tags,
+                tags
+            });
+        });
+    });
+}
