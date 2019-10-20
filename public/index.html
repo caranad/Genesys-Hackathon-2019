@@ -6,29 +6,9 @@
         <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     </head>
     <body>
-        <div id = "app">
-            <div v-if = "show">
-                <div class = "overlay" align="center">
-                    <h1>Data has processed!</h1>
-                </div>
-            </div>
-            <section>
-                <img ref = "selectedImage" v-on:load="loadImage" id = "selectedImage" :src = "image" v-show = "image !== '#'"/>
-            </section>
-            <div class = "imageCapture">
-                <form>
-                    <section>
-                        <label><b style = "color: white;">Select file</b></label>
-                        <input type = "file" id = "file-input" accept = ".jpg" @change="onImageSelect" />
-                        
-                        <label><b style = "color: white;">Capture image</b></label>
-                        <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
-                    </section>
-                    <section>
-                        <progress v-if = "loaded > 0 && 100 > loaded" max = "100" :value = "loaded"></progress>
-                    </section>
-                </form>
-            </div>
+        <div class = "splash_page">
+            <div class = "overlay"></div>
+            <button id = "play">Welcome</button>
         </div>
         <audio id = "myAudio">
             <source src="audio/accomplished.mp3" type="audio/mpeg">
