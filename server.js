@@ -13,7 +13,7 @@ const sharp = require('sharp');
 const send = require('gmail-send')({
     user: 'farmerbob595@gmail.com',
     pass: 'bobfarm123',
-    to:   'christopher.aranadi@gmail.com'
+    to:   'christopher.aranadi@gmail.com;rydsouza82@gmail.com;samual.s.ip@gmail.com'
 });
 
 
