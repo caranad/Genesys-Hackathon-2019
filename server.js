@@ -9,7 +9,6 @@ var fse = require('fse');
 var ExifImage = require('exif').ExifImage;
 var Jimp = require('jimp'); 
 var piexif = require('piexifjs');
-const sharp = require('sharp');
 const send = require('gmail-send')({
     user: 'farmerbob595@gmail.com',
     pass: 'bobfarm123',
@@ -52,6 +51,7 @@ app.post('/upload', function (req, res) {
     var weather = req.body.weather;
     var temperature = parseInt(req.body.temperature);
     //var userfile = req.file;
+    //console.log(userfile);
 
     new ExifImage({ image : './public/uploads/image.jpg' }, async function (error, exifData) {
         
@@ -63,6 +63,7 @@ app.post('/upload', function (req, res) {
         var orientation = exifData.image.Orientation;
         console.log("orientation", orientation);
    
+        console.log("about to remove metadata");
         // remove exif metadata
         if (orientation==1 || orientation==3 || orientation==6 || orientation==8) {
             const newData = piexif.remove(
@@ -71,16 +72,17 @@ app.post('/upload', function (req, res) {
             fse.writeFileSync('./public/uploads/image.jpg', new Buffer(newData, TYPE))
         }
 
+        console.log("about to rotate");
         // rotate image
         const image = await Jimp.read('./public/uploads/image.jpg'); 
         if (orientation == 1) {
-            await image.rotate(0).writeAsync('./public/uploads/image.jpg'); 
+            await image.resize(400, Jimp.AUTO).rotate(0).writeAsync('./public/uploads/image.jpg'); 
         } else if (orientation == 3) {
-            await image.rotate(180).writeAsync('./public/uploads/image.jpg');
+            await image.resize(400, Jimp.AUTO).rotate(180).writeAsync('./public/uploads/image.jpg');
         } else if (orientation == 6) {
-            await image.rotate(270).writeAsync('./public/uploads/image.jpg');
+            await image.resize(400, Jimp.AUTO).rotate(270).writeAsync('./public/uploads/image.jpg');
         } else if (orientation == 8) {
-            await image.rotate(90).writeAsync('./public/uploads/image.jpg');
+            await image.resize(400, Jimp.AUTO).rotate(90).writeAsync('./public/uploads/image.jpg');
         }
 
         // originals
@@ -110,19 +112,26 @@ app.post('/upload', function (req, res) {
                 };
                 fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
     
+                var html =  "<div style=\"background-color:rgb(210, 210, 210);\" align=\"center\">" +
+                                "<div style=\"background-color:white;display:inline-block;margin:10px;padding:10px;\" align=\"left\">" +
+                                    "<h1>Suggestion: " + full_data.suggestion + "</h1>" +
+                                    "<div>Confidence: " + (full_data.confidence*100) + "%</div>" + 
+                                    "<div>Latitude: " + env_data.lat + "</div>"+
+                                    "<div>Longitude: " + env_data.long + "</div>"+
+                                    "<div>Country: " + env_data.country + "</div>"+
+                                    "<div>City: " + env_data.city + "</div>"+
+                                    "<div>Weather: " + env_data.weather + "</div>"+
+                                    "<div>Temperature: " + env_data.temperature + "°C</div>"+
+                                    "<div>Image Color: <span style=\"width:10px;height:10px;background-color:" + env_data.img_data.color + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>" +
+                                    "<div>Image Tags: " + env_data.img_data.tags.join(", ") + "</div>" +
+                                "</div>" +
+                            "</div>";
+                console.log(html);
+
                 send({
                     subject: 'Greetings from Prince Farming',
-                    html: 
-                        "<div>Latitude: " + env_data.lat + "</div>"+
-                        "<div>Longitude: " + env_data.long + "</div>"+
-                        "<div>Country: " + env_data.country + "</div>"+
-                        "<div>City: " + env_data.city + "</div>"+
-                        "<div>Weather: " + env_data.weather + "</div>"+
-                        "<div>Temperature: " + env_data.temperature + "°C</div>"+
-                        "<div>Image Color: <span style=\"width:10px;height:10px;background-color:" + env_data.img_data.color + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>" +
-                        "<div>Image Tags: " + env_data.img_data.tags.join(", ") + "</div>" +
-                        "<div>Suggestion: " + full_data.suggestion + "</div>" +
-                        "<div>Confidence: " + (full_data.confidence*100) + "%</div>"
+                    html: html,
+                    files : ['./public/uploads/image.jpg']
                 }, (error, result, fullResult) => {
                     if (error) {
                         console.error(error);
@@ -159,9 +168,7 @@ function askGenesys(env_data, callback) {
 
 function askGenesysQuestion(token, env_data, callback) {
 
-
     // transformation
-
     if (env_data.temperature < 10) { var temp = 'cold'; }
     else if (env_data.temperature < 20) { var temp = 'mild'; }
     else { var temp = 'hot'; }
@@ -169,6 +176,7 @@ function askGenesysQuestion(token, env_data, callback) {
     if (env_data.weather.indexOf("part") !== -1) { var weather = 'mild'; }
     else if (env_data.weather.indexOf("cloud") !== -1) { var weather = 'rain'; }
     else if (env_data.weather.indexOf("rain") !== -1) { var weather = 'rain'; }
+    else if (env_data.weather.indexOf("fog") !== -1) { var weather = 'mild'; }
     else { var weather = 'sunny'; }
 
     if (env_data.img_data.color.indexOf("B") !== -1) { var color = 'green'; }
@@ -221,52 +229,49 @@ function askGenesysQuestion(token, env_data, callback) {
 
 function getImageDetails(callback) {
 
-    sharp('./public/uploads/image.jpg').resize(400).toFile('./public/uploads/image_resized.jpg', (err, info) => { 
+    var imageToUSe = fse.readFileSync('./public/uploads/image.jpg');
 
-        var imageToUSe = fse.readFileSync('./public/uploads/image_resized.jpg');
+    var subscriptionKey = "38952973ab824afe8673284add426299";
+    var endpoint = "https://westcentralus.api.cognitive.microsoft.com/"
+    var uriBase = endpoint + 'vision/v2.1/analyze';
 
-        var subscriptionKey = "38952973ab824afe8673284add426299";
-        var endpoint = "https://westcentralus.api.cognitive.microsoft.com/"
-        var uriBase = endpoint + 'vision/v2.1/analyze';
+    // Request parameters.
+    var params = {
+        'visualFeatures': 'Categories,Description,Color,Brands,Faces,Objects,Tags',
+        'details': '',
+        'language': 'en'
+    };
+    
+    var options = {
+        uri: uriBase,
+        qs: params,
+        body:imageToUSe,
+        headers: {
+            'Content-Type': 'application/octet-stream',
+            'Ocp-Apim-Subscription-Key' : subscriptionKey
+        }
+    };
+    
+    request.post(options, (error, response, body) => {
+        if (error) {
+            console.log('Error: ', error);
+            return callback({});
+        }
 
-        // Request parameters.
-        var params = {
-            'visualFeatures': 'Categories,Description,Color,Brands,Faces,Objects,Tags',
-            'details': '',
-            'language': 'en'
-        };
+        var body = JSON.parse(body);
+        var color = body.color.accentColor;
+        var desc_tags = body.description.tags;
+        var tags = body.tags.map(function(x) {return x.name;});
         
-        var options = {
-            uri: uriBase,
-            qs: params,
-            body:imageToUSe,
-            headers: {
-                'Content-Type': 'application/octet-stream',
-                'Ocp-Apim-Subscription-Key' : subscriptionKey
-            }
-        };
-        
-        request.post(options, (error, response, body) => {
-            if (error) {
-                console.log('Error: ', error);
-                return callback({});
-            }
+        var Obj = {};
+        desc_tags.map(x => {Obj[x] = true; });
+        tags.map(x => {Obj[x] = true; });
 
-            var body = JSON.parse(body);
-            var color = body.color.accentColor;
-            var desc_tags = body.description.tags;
-            var tags = body.tags.map(function(x) {return x.name;});
-            
-            var Obj = {};
-            desc_tags.map(x => {Obj[x] = true; });
-            tags.map(x => {Obj[x] = true; });
+        var t = Object.keys(Obj).sort();
 
-            var t = Object.keys(Obj).sort();
-
-            callback({
-                color : "#" + color,
-                tags : t
-            });
+        callback({
+            color : "#" + color,
+            tags : t
         });
     });
 }
