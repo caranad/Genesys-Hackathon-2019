@@ -2,8 +2,16 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "[Placeholder for data points to tease out warning not to water to avoid over-watering and to save costs (e.g. What should I do if: (1) I'm located in [Toronto]; (2) my crops are [green]; (3) there are no pests; and (4) it will rain in the next [5] days]",
-	    "answer": "Don't water the plants, it will rain over the next 5 days anyways",
+	    "question": "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+	    "answer": "Don't water the plants, it will rain over the next 5 days anyways."
+	  },
+	  "externalUrl": "http://test.co/info/{{$guid}}"
+	},
+	{
+	  "type": "faq",
+	  "faq": {
+	    "question": "Location: Toronto; Color: green; Pests: no; weather forecast: no rain; temperature forecast: hot; extreme forecast: no",
+	    "answer": "Water more! The sun will be scorching over the next 5 days with no rain.",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
@@ -11,25 +19,25 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "[Placeholder for data point to tease out need to water plants]",
-	    "answer": "You'll want to water the plants, the sun will be scorching over the next 5 days with no rain.",
-	    "alternatives": null
-	  },
-	  "externalUrl": "http://test.co/info/{{$guid}}"
-	},
-	{
-	  "type": "faq",
-	  "faq": {
-	    "question": "[Placeholder for data point to tease out use for pesticide]",
+	    "question": "Location: Toronto; Color: green; Pests: yes; weather forecast: no rain; temperature forecast: hot; extreme forecast: no",
 	    "answer": "Apply some pesticides. We recommend using Product X",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
-	},
+    },
+    {
+        "type": "faq",
+        "faq": {
+          "question": "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: no",
+          "answer": "Apply some pesticides, but NOT today because it will rain.  Do it next week. We recommend using Product X",
+          "alternatives": null
+        },
+        "externalUrl": "http://test.co/info/{{$guid}}"
+      },
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "[Placeholder for data point about geography to tease out soil condition]",
+	    "question": "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: no",
 	    "answer": "In your geography, the soil condition is generally not conductive to the groups and lacking in macronutrients. Consider getting the soil testing and, if necessary, adding organic matter.",
 	    "alternatives": null
 	  },
@@ -38,12 +46,30 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "[Placeholder for data point about natural disaster]",
-	    "answer": "Looks like a tornado warning is coming. You may want to harvest everything you can asap!",
+	    "question": "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
+	    "answer": "Looks like there is an extreme warning forecast (e.g., a flood warning). You may want to harvest everything you can asap!",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
-	}
+    },
+    {
+        "type": "faq",
+        "faq": {
+          "question": "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature forecast: hot; extreme forecast: no",
+          "answer": "Looks like your crops are healthy and there are no pests. Keep doing what you're doing!",
+          "alternatives": null
+        },
+        "externalUrl": "http://test.co/info/{{$guid}}"
+      },
+      {
+        "type": "faq",
+        "faq": {
+          "question": "Location: Toronto; Color: brown; Pests: no; weather forecast: sunny; temperature forecast: hot; extreme forecast: no",
+          "answer": "Your plants look like they are dying. The temperature is very hot and no rain is forecasted",
+          "alternatives": null
+        },
+        "externalUrl": "http://test.co/info/{{$guid}}"
+      }
 ]
 
 
