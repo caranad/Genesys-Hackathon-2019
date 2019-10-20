@@ -12,19 +12,6 @@ var app = new Vue({
         loadImage : function(e) {
             var vm = this;
             EXIF.getData(e.target, function() {
-                /*
-                switch() {
-                    case 3:
-                        vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
-                    case 6:
-                        vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
-                    case 8:
-                        vm.$refs.selectedImage.style.transform = "rotate(270deg)"; break;
-                    case 1:
-                        vm.$refs.selectedImage.style.transform = "rotate(0deg)"; break;
-                }
-                */
-
                 const ORIENT_TRANSFORMS = {
                     1: '',
                     2: 'rotateY(180deg)',
@@ -71,10 +58,10 @@ var app = new Vue({
                     var formData = new FormData();
                     formData.append("latitude", latitude);
                     formData.append("longitude", longitude);
+                    formData.append("temperature", parseInt(response.data.main.temp) - 273);
                     formData.append("country", response.data.sys.country);
                     formData.append("weather", response.data.weather[0].description);
                     formData.append("userfile", image);
-                    
                     
                     axios({
                         method: 'post',
