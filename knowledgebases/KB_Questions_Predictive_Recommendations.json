@@ -37,7 +37,7 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: no",
+	    "question": "Location: Toronto; Color: green; Pests: no; weather forecast: mild; temperature forecast: hot; extreme forecast: no",
 	    "answer": "In your geography, the soil condition is generally not conductive to the groups and lacking in macronutrients. Consider getting the soil testing and, if necessary, adding organic matter.",
 	    "alternatives": null
 	  },
@@ -58,7 +58,7 @@
           "question": "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature forecast: hot; extreme forecast: no",
           "answer": "Looks like your crops are healthy and there are no pests. Keep doing what you're doing!",
           "alternatives": null
-        },
+        },  
         "externalUrl": "http://test.co/info/{{$guid}}"
       },
       {
