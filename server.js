@@ -45,8 +45,8 @@ app.post('/upload', function (req, res) {
     var longitude = req.body.longitude;
     var country = req.body.country;
     var weather = req.body.weather;
-    var temperature = req.body.temperature;
-    var userfile = req.file;
+    var temperature = parseInt(req.body.temperature);
+    //var userfile = req.file;
 
     new ExifImage({ image : './public/uploads/image.jpg' }, async function (error, exifData) {
         
@@ -105,7 +105,7 @@ app.post('/upload', function (req, res) {
                 };
                 fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
     
-                //return res.end(JSON.stringify({}));
+                return res.end(JSON.stringify({}));
                 
                 sendmail({
                     from: 'no-reply@yourdomain.com',
@@ -154,7 +154,29 @@ function askGenesys(env_data, callback) {
 
 function askGenesysQuestion(token, env_data, callback) {
 
-    console.log(env_data);
+
+    // transformation
+
+    if (env_data.temperature < 10) { var temp = 'cold'; }
+    else if (env_data.temperature < 20) { var temp = 'mild'; }
+    else { var temp = 'hot'; }
+
+    if (env_data.weather.indexOf("part") !== -1) { var weather = 'mild'; }
+    else if (env_data.weather.indexOf("cloud") !== -1) { var weather = 'rain'; }
+    else if (env_data.weather.indexOf("rain") !== -1) { var weather = 'rain'; }
+    else { var weather = 'sunny'; }
+
+    if (env_data.img_data.color.indexOf("B") !== -1) { var color = 'green'; }
+    else if (env_data.img_data.color.indexOf("A") !== -1) { var color = 'brown'; }
+    else { var color = 'yellow'; }
+
+    var pests = env_data.img_data.tags.filter(function(x) {
+        return ["insect", "bug", "bee", "wasp", "ladybug", "ant", "beetle", "fly", "butterfly", "caterpillar", "moth", "cocoon", "larvae", "worm", "locust"].indexOf(x) !== -1;
+    }).length > 0 ? "yes" : "no";
+
+
+
+
 
     var options = { method: 'POST',
       url: 'https://api.genesysappliedresearch.com/v2/knowledge/knowledgebases/43a214a6-be93-477d-a2e6-25601ff1a247/search',
@@ -164,7 +186,7 @@ function askGenesysQuestion(token, env_data, callback) {
          'Content-Type': 'application/json' },
       body: 
        { 
-        query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+        query: "Location: " + env_data.city + "; Color: " + color + "; Pests: " + pests + "; weather forecast: " + weather + "; temperature: " + temp + "; extreme forecast: no",
        //query: "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
        //query2: "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
        //query3: "Location: Toronto; Color: yellow; Pests: yes; weather forecast: rain; temperature forecast: cold; extreme forecast: yes",  
