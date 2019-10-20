@@ -3,7 +3,8 @@ var app = new Vue({
     data: {
         image: '#',
         submit: false,
-        loaded: 0
+        loaded: 0,
+        show: false
     },
     methods: {
         onImageSelect : function(e) {
@@ -70,18 +71,21 @@ var app = new Vue({
                         config: { headers: {'Content-Type': 'multipart/form-data' }}
                     })
                     .then(function (response) {
-                        console.log(response);
-                        //alert("Success");
+                        vm.show = true;
+                        vm.triggerOverlay();
                         vm.loaded = 100;
                     })
                     .catch(function (response) {
-                        //alert(response);
-                        console.log(response);
-                        //alert("Fail");
+                        alert(response);
                         vm.loaded = 100;
                     });
                 })
             });
+        },
+        triggerOverlay: function() {
+            setTimeout(() => {
+                this.show = false;
+            }, 2000)
         }
     }
 })
