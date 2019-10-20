@@ -9,7 +9,7 @@ var app = new Vue({
         extreme_weather : '',
         temperature : '',
         color : '',
-        tags : '',
+        tags : [],
         suggestion : '',
         confidence : ''
     },

@@ -51,88 +51,85 @@ app.post('/upload', function (req, res) {
     var temperature = req.body.temperature;
     var userfile = req.file;
 
-    /*
     new ExifImage({ image : './public/uploads/image.jpg' }, async function (error, exifData) {
-        if (error)
-            console.log('Error: '+error.message);
-        else
-            console.log(exifData.image.Orientation); // Do something with your data!
-
-        var orientation = exifData.image.Orientation;
-
-
-        // User-Defined Function to read the images 
-        const image = await Jimp.read('./public/uploads/image.jpg'); 
-
-        // rotate Function having a rotation as 55 
-        if (orientation == 1) {
-            image.rotate(0).write('./public/uploads/image.jpg'); 
-        } else if (orientation == 3) {
-            image.rotate(180).write('./public/uploads/image.jpg');
-        } else if (orientation == 6) {
-            //image.rotate(90).write('./public/uploads/image.jpg');
-            image.write('./public/uploads/image.jpg');
-        } else if (orientation == 8) {
-            image.rotate(270).write('./public/uploads/image.jpg');
+        
+        if (error) {
+            console.log('Error: ' + error.message);
         }
+
+        // get orientation
+        var orientation = exifData.image.Orientation;
+        console.log(orientation);
+   
+        // remove exif metadata
+        const newData = piexif.remove(
+            fse.readFileSync('./public/uploads/image.jpg').toString(TYPE)
+        )
+        fse.writeFileSync('./public/uploads/image.jpg', new Buffer(newData, TYPE))
+
+        // rotate image
+        const image = await Jimp.read('./public/uploads/image.jpg'); 
+        if (orientation == 1) {
+            image.rotate(180).write('./public/uploads/image.jpg'); 
+        } else if (orientation == 3) {
+            image.rotate(0).write('./public/uploads/image.jpg');
+        } else if (orientation == 6) {
+            image.rotate(270).write('./public/uploads/image.jpg');
+        } else if (orientation == 8) {
+            image.rotate(90).write('./public/uploads/image.jpg');
+        }
+
+        // originals
         //1: 'rotate(0deg)',
         //3: 'rotate(180deg)',
         //6: 'rotate(90deg)',
         //8: 'rotate(270deg)'
-                
-        
-        const newData = piexif.remove(
-            fse.readFileSync('./public/uploads/image.jpg').toString(TYPE)
-        )
-        fse.writeFileSync('./public/uploads/image2.jpg', new Buffer(newData, TYPE))
 
+        getImageDetails(function(img_data) {
 
-        console.log("Image Processing Completed"); 
-    });
-    */
-
-    //console.log(latitude, longitude, country, weather);
-
-    getImageDetails(function(img_data) {
-
-        var env_data = {
-            "lat" : latitude,
-            "long" : longitude,
-            "country" : country,
-            "city" : "Toronto",
-            "weather" : weather,
-            "extreme_weather" : false,
-            "temperature" : temperature,
-            "img_data" : img_data
-        };
-
-        askGenesys(env_data, function(suggestion, confidence) {
-            var full_data = {
-                env_data : env_data,
-                suggestion : suggestion,
-                confidence : confidence
+            var env_data = {
+                "lat" : latitude,
+                "long" : longitude,
+                "country" : country,
+                "city" : "Toronto",
+                "weather" : weather,
+                "extreme_weather" : false,
+                "temperature" : temperature,
+                "img_data" : img_data
             };
-            fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
-
-            sendmail({
-                from: 'no-reply@yourdomain.com',
-                to: 'baranadi@rogers.com',
-                subject: 'Prince Farming Notification',
-                html: 
-                   "<div>Latitude: " + env_data.lat + "</div>"+
-                   "<div>Longitude: " + env_data.long + "</div>"+
-                   "<div>Country: " + env_data.country + "</div>"+
-                   "<div>City: " + env_data.city + "</div>"+
-                   "<div>Weather: " + env_data.weather + "</div>"+
-                   "<div>Temperature: " + env_data.temperature + " C</div>"+
-                   "<div>Image Color: <span style=\"width:10px;height:10px;background-color:" + env_data.img_data.color + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>" +
-                   "<div>Image Tags: " + env_data.img_data.tags.join(", ") + "</div>" +
-                   "<div>Suggestion: " + full_data.suggestion + "</div>" +
-                   "<div>Confidence: " + (full_data.confidence*100) + "%</div>"
-              }, function(err, reply) {
-                res.end(JSON.stringify({}));
+    
+            askGenesys(env_data, function(suggestion, confidence) {
+                var full_data = {
+                    env_data : env_data,
+                    suggestion : suggestion,
+                    confidence : confidence
+                };
+                fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
+    
+                return res.end(JSON.stringify({}));
+                
+                sendmail({
+                    from: 'no-reply@yourdomain.com',
+                    to: 'baranadi@rogers.com',
+                    subject: 'Prince Farming Notification',
+                    html: 
+                       "<div>Latitude: " + env_data.lat + "</div>"+
+                       "<div>Longitude: " + env_data.long + "</div>"+
+                       "<div>Country: " + env_data.country + "</div>"+
+                       "<div>City: " + env_data.city + "</div>"+
+                       "<div>Weather: " + env_data.weather + "</div>"+
+                       "<div>Temperature: " + env_data.temperature + "°C</div>"+
+                       "<div>Image Color: <span style=\"width:10px;height:10px;background-color:" + env_data.img_data.color + "\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>" +
+                       "<div>Image Tags: " + env_data.img_data.tags.join(", ") + "</div>" +
+                       "<div>Suggestion: " + full_data.suggestion + "</div>" +
+                       "<div>Confidence: " + (full_data.confidence*100) + "%</div>"
+                  }, function(err, reply) {
+                    res.end(JSON.stringify({}));
+                });
             });
         });
+
+        console.log("Image Processing Completed"); 
     });
 });
 
@@ -181,7 +178,7 @@ function askGenesysQuestion(token, env_data, callback) {
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
     
-        console.log(JSON.stringify(body,null,4));
+        //console.log(JSON.stringify(body,null,4));
 
         var results = body.results.filter(function(x) {
             return x.confidence > 0.1;

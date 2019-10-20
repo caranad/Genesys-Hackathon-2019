@@ -10,9 +10,26 @@
     <body>
         <div id = "app">
             <div class = "dashboard">
-                <div class = "image_container">
-                    <img id = "selectedImage" src = "uploads/image.jpg"/>
+
+                <div align="center">
+                    <div id = "title">
+                        <h2>Farm Status</h2>
+                    </div>
+                    <div>What you should do:</div>
+                    <h1>{{suggestion}}</h1>
+                    <div>Confidence:</div>
+                    <div>
+                        <img class="emotion" v-if="0.33 >= confidence" src="images/sad.png"/>
+                        <img class="emotion" v-else-if="0.66 >= confidence" src="images/neutral.png"/>
+                        <img class="emotion" v-else src="images/happy.png"/>
+                    </div>
+
+                    <div class = "image_container" align="center">
+                        <img id = "selectedImage" src = "uploads/image.jpg"/>
+                    </div>
                 </div>
+
+
                 <div class = "image_data_container">
                     <table align = "center">
                         <tr>
@@ -28,16 +45,28 @@
                             <td>{{country}}</td>
                         </tr>
                         <tr>
+                            <td>City</td>
+                            <td>{{city}}</td>
+                        </tr>
+                        <tr>
                             <td>Weather</td>
                             <td>{{weather}}</td>
                         </tr>
                         <tr>
+                            <td>Extreme Weather</td>
+                            <td>{{extreme_weather}}</td>
+                        </tr>  
+                        <tr>
                             <td>Temperature</td>
-                            <td>{{temperature}} C</td>
+                            <td>{{temperature}}°C</td>
                         </tr>
                         <tr>
-                            <td>Problem</td>
-                            <td>{{problem}}</td>
+                            <td>Color</td>
+                            <td><span :style="[{backgroundColor:color}]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Objects in Picture</td>
+                            <td>{{tags.join(", ")}}</td>
                         </tr>
                     </table>
                 </div>
