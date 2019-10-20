@@ -6,18 +6,23 @@
         <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" defer></script>
     </head>
     <body>
-        <div class = "splash_page"></div>
+        <div class = "splash_page">
+            <button id = "play">Welcome</button>
+        </div>
         <audio id = "myAudio">
             <source src="audio/accomplished.mp3" type="audio/mpeg">
         </audio>
     </body>
     <script type = "text/javascript">
+        document.querySelector("#play").addEventListener('click', () => {
+            document.querySelector("#play").style.display = "none";
+        });
+
         var socket = io('http://localhost');
         socket.on('notification', function (data) {
-
+            window.navigator.vibrate(200);
             // Vibrate, play a loud noise, and show the notification
             document.querySelector("#myAudio").play();
-            window.navigator.vibrate(200);
             console.log(data);
         });
     </script>
