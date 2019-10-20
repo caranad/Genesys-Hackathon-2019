@@ -25,7 +25,10 @@
             // Vibrate, play a loud noise, and show the notification
             document.querySelector("#myAudio").play();
             document.querySelector(".overlay").style.display = "block";
-            document.querySelector(".overlay").innerHTML = data.data;
+            document.querySelector(".overlay").innerHTML = data.html;
+            setTimeout(function() {
+                window.location.href = "/dashboard.html";
+            }, 5000);
         });
     </script>
 </html>
