@@ -1,15 +1,18 @@
-# To be converted to JSON
-# We'll have 2 knowledge bases
-# Knowledge Base 1 --> to help with RECOMMENDATIONS
-# Knowledge Base 2 (lower priority) --> to answer questions about RECOMMENDATIONS
+-- sample queries
 
-Data Points
+{
+  "query": "Location: Toronto; Color: green; Pests: no; weather forecast: rain; temperature: mild; extreme forecast: no",
+  "query2": "Location: Toronto; Color: green; Pests: yes; weather forecast: rain; temperature forecast: hot; extreme forecast: yes",
+  "query3": "Location: Toronto; Color: yellow; Pests: yes; weather forecast: rain; temperature forecast: cold; extreme forecast: yes",  
+  
+  "pageSize": 5,
+  "pageNumber": 1,
+  "sortOrder": "string",
+  "sortBy": "string",
+  "languageCode":"{{languageCode}}",
+  "documentType": "Faq"
+}
 
-- Image Analysis: color (GREEN or X); 
-- Location: Need City, and Country
-- Need: Weather Forecast next 5 days
-
--- Queries, you can ask more than one questions
 
 -{
   "query": "Why did my account get locked?",
