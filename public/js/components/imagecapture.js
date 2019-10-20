@@ -9,30 +9,29 @@ var app = new Vue({
         onImageSelect : function(e) {
             this.getFileInfo(e.target.files[0]);
         },
+        loadImage : function(e) {
+            var vm = this;
+            EXIF.getData(e.target, function() {
+                switch(EXIF.getTag(e.target, "Orientation")) {
+                    case 3:
+                        vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
+                    case 6:
+                        vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
+                    case 8:
+                        vm.$refs.selectedImage.style.transform = "rotate(270deg)"; break;
+                    case 1:
+                        vm.$refs.selectedImage.style.transform = "rotate(0deg)"; break;
+                }
+            });
+        },
         getFileInfo: function (input) {
             var vm = this;
-
             if (input) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     var src = e.target.result;
                     vm.image = src;
                     vm.loaded = 33;
-                    
-                    EXIF.getData(vm.$refs.selectedImage, function() {
-                        alert('Exif=' + EXIF.getTag(vm, "Orientation"));
-                        switch(parseInt(EXIF.getTag(vm, "Orientation"))) {
-                            case 3:
-                                vm.$refs.selectedImage.style.transform = "rotate(180deg)"; break;
-                            case 6:
-                                vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
-                            case 8:
-                                vm.$refs.selectedImage.style.transform = "rotate(270deg)"; break;
-                            default:
-                                vm.$refs.selectedImage.style.transform = "rotate(90deg)"; break;
-                        }
-                    });
-
                     vm.sendImage(input);
                 }
                 reader.readAsDataURL(input);
@@ -44,7 +43,7 @@ var app = new Vue({
             vm.submit = true;
 
             navigator.geolocation.getCurrentPosition((position) => {
-                alert(position);
+                //alert(position);
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 vm.loaded = 66;
@@ -68,13 +67,13 @@ var app = new Vue({
                     })
                     .then(function (response) {
                         console.log(response);
-                        alert("Success");
+                        //alert("Success");
                         vm.loaded = 100;
                     })
                     .catch(function (response) {
-                        alert(response);
+                        //alert(response);
                         console.log(response);
-                        alert("Fail");
+                        //alert("Fail");
                         vm.loaded = 100;
                     });
                 })
