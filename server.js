@@ -7,13 +7,10 @@ var path = require('path');
 var https = require('https');
 var fse = require('fse');
 var ExifImage = require('exif').ExifImage;
-var options = {quality: 100}
 var Jimp = require('jimp'); 
 var piexif = require('piexifjs');
 const sharp = require('sharp');
 const sendmail = require('sendmail')();
-
-const ipath = './public/uploads/image.jpg' 
 
 var privateKey  = fse.readFileSync('sslcert/key.pem', 'utf8');
 var certificate = fse.readFileSync('sslcert/cert.pem', 'utf8');
@@ -108,7 +105,7 @@ app.post('/upload', function (req, res) {
                 };
                 fse.writeFileSync('./public/uploads/data.json', JSON.stringify(full_data));
     
-                return res.end(JSON.stringify({}));
+                //return res.end(JSON.stringify({}));
                 
                 sendmail({
                     from: 'no-reply@yourdomain.com',
@@ -156,6 +153,8 @@ function askGenesys(env_data, callback) {
 }
 
 function askGenesysQuestion(token, env_data, callback) {
+
+    console.log(env_data);
 
     var options = { method: 'POST',
       url: 'https://api.genesysappliedresearch.com/v2/knowledge/knowledgebases/43a214a6-be93-477d-a2e6-25601ff1a247/search',
