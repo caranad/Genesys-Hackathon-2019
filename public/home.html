@@ -3,7 +3,7 @@
         <title>Splash</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <link rel = "stylesheet" href = "css/home.css">
-        <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" defer></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     </head>
     <body>
         <div class = "splash_page">
@@ -18,7 +18,7 @@
             document.querySelector("#play").style.display = "none";
         });
 
-        var socket = io('http://localhost');
+        var socket = io('');
         socket.on('notification', function (data) {
             window.navigator.vibrate(200);
             // Vibrate, play a loud noise, and show the notification
