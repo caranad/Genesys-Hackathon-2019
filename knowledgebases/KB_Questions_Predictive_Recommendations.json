@@ -2,8 +2,8 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "What are the side effects of pesticides?",
-	    "answer": "Pesticides come with trade-offs. While they kill reduce or repel insects, weeds and diseases, they have been proven to have a variety of impacts ranging from acute deadly poisining to respiratory conditions to conacer, particularly in children. They also disrupt ecosystems by adversely affecting nontarget plant species, and those that mimic hormones can harm animal health.",
+	    "question": "[Placeholder for data points to tease out warning not to water to avoid over-watering and to save costs (e.g. What should I do if: (1) I'm located in [Toronto]; (2) my crops are [green]; (3) there are no pests; and (4) it will rain in the next [5] days]",
+	    "answer": "Don't water the plants, it will rain over the next 5 days anyways",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
@@ -11,8 +11,8 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "How do you recommend we store unused seed?",
-	    "answer": "Store them in tightly sealed containers. You can store different kinds of seeds, each in individual paper packets, together in a large container. Keep seeds cry and cool. A temperature between 32 degrees and 41 degrees F is ideal.",
+	    "question": "[Placeholder for data point to tease out need to water plants]",
+	    "answer": "You'll want to water the plants, the sun will be scorching over the next 5 days with no rain.",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
@@ -20,8 +20,8 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "How do we prepare the soil for planting?",
-	    "answer": "Healthy soil is basis of healthy plans. Of the 1y or so elements thought to be essential for platn growth, nitrogen, phosphorous and potassium are the most important.  They are known as primary or macronutrients because plants take them from the soil in the largest amounts. Fertilizers that contain all threer of these nutrients are labeled complete fertilizers, but they are harderly complete in an absolute sense. One way to determine what minerals are lacking is to get it testee. Consult our partners located in Toronto, Ontario, Canada that offer low cost soil tests.",
+	    "question": "[Placeholder for data point to tease out use for pesticide]",
+	    "answer": "Apply some pesticides. We recommend using Product X",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
@@ -29,8 +29,8 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "How do you recommend we store unused seed?",
-	    "answer": "Store them in tightly sealed containers. You can store different kinds of seeds, each in individual paper packets, together in a large container. Keep seeds cry and cool. A temperature between 32 degrees and 41 degrees F is ideal.",
+	    "question": "[Placeholder for data point about geography to tease out soil condition]",
+	    "answer": "In your geography, the soil condition is generally not conductive to the groups and lacking in macronutrients. Consider getting the soil testing and, if necessary, adding organic matter.",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
@@ -38,8 +38,8 @@
 	{
 	  "type": "faq",
 	  "faq": {
-	    "question": "How to improve soil conditions?",
-	    "answer": "Adding organic matter in the form of compost and aged manure, or using muilch or growing cover grops (green manures), isd the best way to prepare soil for planting. Adding chemical fertilizers will replenish only certain nutrients and do nothing for maintainaing good, friable soil. Organic matter will help supply everything your palnts need. Consider organmic matter such as Black Post Compost.",
+	    "question": "[Placeholder for data point about natural disaster]",
+	    "answer": "Looks like a tornado warning is coming. You may want to harvest everything you can asap!",
 	    "alternatives": null
 	  },
 	  "externalUrl": "http://test.co/info/{{$guid}}"
