@@ -35,6 +35,11 @@ table td {
     width:100%;
     max-width:400px;
 }
+.chart {
+    width:90%;
+    max-width:400px;
+    display:block;
+}
 .emotion {
     width:30px;
     height:30px;
