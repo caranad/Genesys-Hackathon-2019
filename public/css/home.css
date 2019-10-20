@@ -1,0 +1,10 @@
+.splash_page {
+    background-image: url('../images/splash_page.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+html, body {
+    height: 100%;
+}
