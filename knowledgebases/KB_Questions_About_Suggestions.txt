@@ -9,72 +9,36 @@ Data Points
 - Location: Need City, and Country
 - Need: Weather Forecast next 5 days
 
-Knowledge Base 1 (Use Data to make Predictive Recommendations)
+-- Queries, you can ask more than one questions
 
-Q: Should I water my crops if: (1) crops are green; and (2) weather forecast shows rain?
-A: Yes
+-{
+  "query": "Why did my account get locked?",
+  "query2": "I want to get alerts for my account activity. What do I do?",
+  "query3": "Will my loan application be dependent on my credit score?",
+  "query4": "Is my financial information safe?",
+  "query5": "Is my data  safe?",
+  "query6": "What do you do for my security?",
+  "query7": "Can I take a vacation?",
+  
+  "pageSize": 5,
+  "pageNumber": 1,
+  "sortOrder": "string",
+  "sortBy": "string",
+  "languageCode":"{{languageCode}}",
+  "documentType": "Faq"
 
-Q: Should I fertilize my crops if:
+}
 
-
-
-Knowledge Base 2 (Questions about Preditive Recommendations)
-
-Q: What are the side effects of using pesticies?
-Alternative Q: What are the tradeoffs when using pesticides?
-A: Pesticides come with trade-offs.  While they kill reduce or repel insects, weeds and diseases, they have been proven to have a variety of impacts ranging from acute deadly poisining to respiratory conditions to conacer, particularly in children. They also disrupt ecosystems by adversely affecting nontarget plant species, and those that mimic hormones can harm animal health."
-
-Q: How do you recommend we store unused seed?
-A: Store them in tightly sealed containers. You can store different kinds of seeds, each in individual paper packets, together in a large container. Keep seeds cry and cool. A temperature between 32 degrees and 41 degrees F is ideal.
-
-[
-	{
-	  "type": "faq",
-	  "faq": {
-	    "question": "What are the side effects of pesticides?",
-	    "answer": "Pesticides come with trade-offs. While they kill reduce or repel insects, weeds and diseases, they have been proven to have a variety of impacts ranging from acute deadly poisining to respiratory conditions to conacer, particularly in children. They also disrupt ecosystems by adversely affecting nontarget plant species, and those that mimic hormones can harm animal health.",
-	    "alternatives": null
-	  },
-	  "externalUrl": "http://test.co/info/{{$guid}}"
-	},
-	{
-	  "type": "faq",
-	  "faq": {
-	    "question": "How do you recommend we store unused seed?",
-	    "answer": "Store them in tightly sealed containers. You can store different kinds of seeds, each in individual paper packets, together in a large container. Keep seeds cry and cool. A temperature between 32 degrees and 41 degrees F is ideal.",
-	    "alternatives": null
-	  },
-	  "externalUrl": "http://test.co/info/{{$guid}}"
-	},
-	{
-	  "type": "faq",
-	  "faq": {
-	    "question": "How do we prepare the soil for planting?",
-	    "answer": "Healthy soil is basis of healthy plans. Of the 1y or so elements thought to be essential for platn growth, nitrogen, phosphorous and potassium are the most important.  They are known as primary or macronutrients because plants take them from the soil in the largest amounts. Fertilizers that contain all threer of these nutrients are labeled complete fertilizers, but they are harderly complete in an absolute sense. One way to determine what minerals are lacking is to get it testee. Consult our partners located in Toronto, Ontario, Canada that offer low cost soil tests.",
-	    "alternatives": null
-	  },
-	  "externalUrl": "http://test.co/info/{{$guid}}"
-	},
-	{
-	  "type": "faq",
-	  "faq": {
-	    "question": "How do you recommend we store unused seed?",
-	    "answer": "Store them in tightly sealed containers. You can store different kinds of seeds, each in individual paper packets, together in a large container. Keep seeds cry and cool. A temperature between 32 degrees and 41 degrees F is ideal.",
-	    "alternatives": null
-	  },
-	  "externalUrl": "http://test.co/info/{{$guid}}"
-	},
-	{
-	  "type": "faq",
-	  "faq": {
-	    "question": "How to improve soil conditions?",
-	    "answer": "Adding organic matter in the form of compost and aged manure, or using muilch or growing cover grops (green manures), isd the best way to prepare soil for planting. Adding chemical fertilizers will replenish only certain nutrients and do nothing for maintainaing good, friable soil. Organic matter will help supply everything your palnts need. Consider organmic matter such as Black Post Compost.",
-	    "alternatives": null
-	  },
-	  "externalUrl": "http://test.co/info/{{$guid}}"
-	}
-]
-
-
+{
+  "query": "What are side effect of crops??",
+  "query2": "Who developed this awesome solution?",
+  
+  "pageSize": 5,
+  "pageNumber": 1,
+  "sortOrder": "string",
+  "sortBy": "string",
+  "languageCode":"{{languageCode}}",
+  "documentType": "Faq"
+}
 
 
