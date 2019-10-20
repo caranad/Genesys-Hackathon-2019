@@ -6,6 +6,11 @@ var multer = require('multer');
 var path = require('path');
 var https = require('https');
 var fse = require('fse');
+const jo = require('jpeg-autorotate')
+const options = {quality: 100}
+
+
+const ipath = './public/uploads/image.jpg' 
 
 var privateKey  = fse.readFileSync('sslcert/key.pem', 'utf8');
 var certificate = fse.readFileSync('sslcert/cert.pem', 'utf8');
@@ -36,8 +41,25 @@ app.use(upload.single('userfile'));
 
 
 app.post('/upload', function (req, res) {
-    const file = req.file;
-    console.log(file);
+    
+    var latitude = req.body.latitude;
+    var longitude = req.body.longitude;
+    var country = req.body.country;
+    var weather = req.body.weather;
+    var userfile = req.file;
+
+    console.log(latitude, longitude, country, weather);
+
+    fse.writeFileSync('./public/uploads/data.json', JSON.stringify({
+        "lat" : latitude,
+        "long" : longitude,
+        "country" : country,
+        "weather" : weather,
+        "problem" : "water the crops"
+    }));
+
+    console.log(userfile);
+
     res.end(JSON.stringify({}));
 });
 
