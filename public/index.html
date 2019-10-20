@@ -14,7 +14,7 @@
             <div class = "imageCapture">
                 <form>
                     <section>
-                        <img ref = "selectedImage" id = "selectedImage" :src = "image" v-if = "image !== '#'"/>
+                        <img ref = "selectedImage" id = "selectedImage" :src = "image" v-show = "image !== '#'"/>
                     </section>
                     <section>
                         <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
