@@ -44,9 +44,10 @@ var app = new Vue({
                     formData.append("weather", response.data.weather[0].description);
                     formData.append("userfile", image);
                     
+                    
                     axios({
                         method: 'post',
-                        url: 'https://localhost:3000/upload',
+                        url: '/upload',
                         data: formData,
                         config: { headers: {'Content-Type': 'multipart/form-data' }}
                     })
@@ -55,6 +56,7 @@ var app = new Vue({
                         vm.loaded = 100;
                     })
                     .catch(function (response) {
+                        alert(response);
                         console.log(response);
                         vm.loaded = 100;
                     });
