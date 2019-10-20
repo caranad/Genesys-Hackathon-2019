@@ -9,11 +9,13 @@ var fse = require('fse');
 var ExifImage = require('exif').ExifImage;
 var Jimp = require('jimp'); 
 var piexif = require('piexifjs');
+/*
 const send = require('gmail-send')({
     user: 'farmerbob595@gmail.com',
     pass: 'bobfarm123',
     to:   'christopher.aranadi@gmail.com;rydsouza82@gmail.com;samual.s.ip@gmail.com'
 });
+*/
 
 
 var privateKey  = fse.readFileSync('sslcert/key.pem', 'utf8');
@@ -72,7 +74,7 @@ app.post('/upload', function (req, res) {
             fse.writeFileSync('./public/uploads/image.jpg', new Buffer(newData, TYPE))
         }
 
-        console.log("about to rotate");
+        console.log("about to resize and rotate");
         // rotate image
         const image = await Jimp.read('./public/uploads/image.jpg'); 
         if (orientation == 1) {
@@ -126,8 +128,9 @@ app.post('/upload', function (req, res) {
                                     "<div>Image Tags: " + env_data.img_data.tags.join(", ") + "</div>" +
                                 "</div>" +
                             "</div>";
-                console.log(html);
+                //console.log(html);
 
+                /*
                 send({
                     subject: 'Greetings from Prince Farming',
                     html: html,
@@ -139,6 +142,13 @@ app.post('/upload', function (req, res) {
                     console.log("finished sending email");
                     res.end(JSON.stringify({}));
                 });
+                */
+
+                console.log("broadcasted to everyone");
+                io.emit('notification', { html: html });
+
+                res.end(JSON.stringify({}));
+                console.log("finished");
             });
         });
 
@@ -277,6 +287,9 @@ function getImageDetails(callback) {
 }
 
 var httpsServer = https.createServer(credentials, app);
+
+var io = require('socket.io')(httpsServer);
+
 httpsServer.listen(process.env.PORT || 3000, function () {
     var host = httpsServer.address().address;
     var port = httpsServer.address().port;
