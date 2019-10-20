@@ -3,6 +3,7 @@
         <title>Splash</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <link rel = "stylesheet" href = "css/home.css">
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" defer></script>
     </head>
     <body>
         <div class = "splash_page"></div>
@@ -11,5 +12,13 @@
         document.addEventListener('click', () => {
             window.location.href = "/dashboard.html";
         })
+
+        var socket = io('http://localhost');
+        socket.on('notification', function (data) {
+
+            // Vibrate, play a loud noise, and show the notification
+            window.navigator.vibrate(200);
+            console.log(data);
+        });
     </script>
 </html>
