@@ -23,6 +23,7 @@
             <div class = "imageCapture">
                 <form>
                     <section>
+                        <input type = "file" id = "file-input" accept = ".jpg" @change="onImageSelect" />
                         <input type = "file" id = "file-input" accept = "image/*" capture = "camera" @change="onImageSelect" />
                     </section>
                     <section>
