@@ -5,5 +5,7 @@ You are looking at the code of Prince Farming, an app that helps farmers manage 
 This app won 1st place at the 2019 Genesys Hackathon.
 
 Front-end by Christopher Aranadi and Ryan D'Souza
+
 Back-end by Ryan D'Souza
+
 Data provided by Sam Ip
