@@ -2,14 +2,15 @@ var app = new Vue({
     el: "#app", 
     data: {
         image: '#',
-        submit: false,
-        loaded: 0
+        loaded: 0,
+        show: false
     },
     methods: {
         onImageSelect : function(e) {
             this.getFileInfo(e.target.files[0]);
         },
         loadImage : function(e) {
+            /*
             var vm = this;
             EXIF.getData(e.target, function() {
                 const ORIENT_TRANSFORMS = {
@@ -25,16 +26,17 @@ var app = new Vue({
                 var o = EXIF.getTag(e.target, "Orientation");
                 var sty = ORIENT_TRANSFORMS[o];
                 vm.$refs.selectedImage.style.transform = sty;
-                
             });
+            */
         },
         getFileInfo: function (input) {
             var vm = this;
+            this.loaded = 0;
             if (input) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    var src = e.target.result;
-                    vm.image = src;
+                    //var src = e.target.result;
+                    //vm.image = src;
                     vm.loaded = 33;
                     vm.sendImage(input);
                 }
@@ -44,7 +46,6 @@ var app = new Vue({
         sendImage: function(image) {
             var vm = this;
             event.preventDefault();
-            vm.submit = true;
 
             navigator.geolocation.getCurrentPosition((position) => {
                 //alert(position);
@@ -70,18 +71,22 @@ var app = new Vue({
                         config: { headers: {'Content-Type': 'multipart/form-data' }}
                     })
                     .then(function (response) {
-                        console.log(response);
-                        //alert("Success");
+                        vm.show = true;
+                        vm.image = "uploads/image.jpg?ts=" + (new Date()).valueOf();
+                        vm.triggerOverlay();
                         vm.loaded = 100;
                     })
                     .catch(function (response) {
-                        //alert(response);
-                        console.log(response);
-                        //alert("Fail");
+                        alert(response);
                         vm.loaded = 100;
                     });
                 })
             });
+        },
+        triggerOverlay: function() {
+            setTimeout(() => {
+                this.show = false;
+            }, 2000)
         }
     }
 })

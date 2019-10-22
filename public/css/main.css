@@ -1,19 +1,37 @@
 * {
-    font-family: Arial;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
     margin:0;
+    overflow:hidden;
 }
-
+#app {
+    position: relative;
+}
 .imageCapture {
     text-align: center;
-}
-
-section {
-    margin-bottom: 10px;
+    position:absolute;
+    top:0;
+    left:0;
+    background-color:rgba(0,0,0,0.6);
+    width:100%;
+    padding:10px;
 }
 
 #selectedImage {
+    width: 100vw;
+    height:100vh;
+}
 
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(3, 172, 0, 0.7);
+    opacity: 0.7;
+    z-index: 1;
+    color:white;
 }

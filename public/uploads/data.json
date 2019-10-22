@@ -1,1 +1,1 @@
-{"lat":"43.650033099999995","long":"-79.391594","country":"CA","weather":"clear sky","problem":"water the crops"}
+{"env_data":{"lat":"43.64420893140476","long":"-79.40238255083506","country":"CA","city":"Toronto","weather":"clear sky","extreme_weather":false,"temperature":12,"img_data":{"color":"#8B6240","tags":["brown","food","holding","indoor","large","pair","sitting","standing","table","white"]}},"suggestion":"Your plants look like they are dying. Theere is no rain is forecasted. Water your plants.","confidence":0.3185954517473651}

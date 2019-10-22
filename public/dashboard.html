@@ -4,42 +4,82 @@
         <title>Dashboard</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <link rel = "stylesheet" href = "css/dashboard.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
         <script src = "js/dashboard/dashboard.js" defer></script>
     </head>
     <body>
         <div id = "app">
             <div class = "dashboard">
-                <div class = "image_container">
-                    <img id = "selectedImage" src = "uploads/image.jpg"/>
+                <div align="center">
+                    <div id = "title">
+                        <h2>Farm Status</h2>
+                    </div>
+                    <div style = "padding: 10px;">
+                        <div>What you should do:</div>
+                        <h1>{{suggestion}}</h1>
+                        <div>Confidence:</div>
+                        <div>
+                            <img class="emotion" v-if="0.33 >= confidence" src="images/sad.png"/>
+                            <img class="emotion" v-else-if="0.66 >= confidence" src="images/neutral.png"/>
+                            <img class="emotion" v-else src="images/happy.png"/>
+                        </div>    
+                    </div>
+
+                    <div class = "image_container" align="center">
+                        <img id = "selectedImage" src = "uploads/image.jpg"/>
+                    </div>
                 </div>
+
+                <div class = "data_points">
+                    <h2>Data Points</h2>
+
+                    <img class="chart" src="images/1_95.png"/>
+                    <img class="chart" src="images/Chart-Area.png"/>
+                </div>
+
                 <div class = "image_data_container">
                     <table align = "center">
                         <tr>
-                            <td>Latitude</td>
+                            <td><b>Latitude</b></td>
                             <td>{{lat}}</td>
                         </tr>
                         <tr>
-                            <td>Longitude</td>
+                            <td><b>Longitude</b></td>
                             <td>{{long}}</td>
                         </tr>
                         <tr>
-                            <td>Country</td>
+                            <td><b>Country</b></td>
                             <td>{{country}}</td>
                         </tr>
                         <tr>
-                            <td>Weather</td>
+                            <td><b>City</b></td>
+                            <td>{{city}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Weather</b></td>
                             <td>{{weather}}</td>
                         </tr>
                         <tr>
-                            <td>Temperature</td>
-                            <td>{{temperature}} C</td>
+                            <td><b>Extreme Weather</b></td>
+                            <td>{{extreme_weather}}</td>
+                        </tr>  
+                        <tr>
+                            <td><b>Temperature</b></td>
+                            <td>{{temperature}}°C</td>
                         </tr>
                         <tr>
-                            <td>Problem</td>
-                            <td>{{problem}}</td>
+                            <td><b>Color</b></td>
+                            <td><span :style="[{backgroundColor:color}]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>Objects in Picture</b></td>
+                            <td>{{tags.join(", ")}}</td>
                         </tr>
                     </table>
+                </div>
+                <div style="padding:10px;">
+                    <img class="map" src="images/map.png"/>
                 </div>
             </div>
         </div>
